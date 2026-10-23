@@ -28,7 +28,11 @@
   config:
     includeHarnessIdentity: false
     personaPrefix: ""
-    personaSuffix: Your working directory is {{cwd}}.
+    # 不要在这里写 `Your working directory is {{cwd}}.`：0.2.1-rc.2 起 agent-loop
+    # 不再注册 cwd 插值变量（改由 working-directory 上下文下发），残留会让整轮
+    # renderPrompt 抛 unknown prompt variable 而失败。留空时由 lib/identity.js
+    # 的 cwdSuffixText() 按真实路径补，拿不到路径就保持空。
+    personaSuffix: ""
 
 - id: dsh-purge
   inject: [systemPrompt, tools]
